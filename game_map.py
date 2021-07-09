@@ -19,20 +19,19 @@ class GameMap:
         # console.tiles_rgb[0: self.width, 0: self.height] = self.tiles["dark"]
 
         # The new, SLOW, bitmask renderer
+        
         for x in range(0, self.width):
             for y in range(0, self.height):
-                tile = self.tiles[x, y]["dark"]
+                console.tiles_rgb[x, y] = self.tiles[x, y]["dark"]
                 if self.tiles[x, y] == tile_types.wall:
-                    tile[0] = self.wall_glyph(x, y)
-
-                console.tiles_rgb[x, y] = tile
+                    console.tiles_rgb[x, y][0] = self.wall_glyph(x, y)
 
     def is_revealed_and_wall(self, x: int, y: int) -> bool:
         return self.tiles[x, y] == tile_types.wall
 
     def wall_glyph(self, x: int, y: int) -> int:
         if x < 1 or x > self.width - 2 or y < 1 or y > self.height - 2:
-            return 35
+            return CHARMAP_CP437[35]
 
         mask = 0
         if self.is_revealed_and_wall(x, y - 1):
